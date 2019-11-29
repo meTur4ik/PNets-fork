@@ -1,16 +1,18 @@
 var RunList = [];
 var RunIcon = null;
-var ExitRun = false;    // Нажата кнопка "СТОП", т.е.(выйти из симуляции)
+var ExitRun = false;    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅ", пїЅ.пїЅ.(пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 var IsRunning = false;
 var AnimateDelay = 500;
 
 function StartRun() {
+    if (IsRunning) return;
     IsRunning = true;
     ExitRun = false;
     RunIcon = new RunIconInitialize(AnimateDelay);
     Run();
 }
 function StopRun() {
+    if (!IsRunning) return;
     ExitRun = true;
     IsRunning = false;
 }
@@ -26,7 +28,7 @@ function Run()
     Object.keys(Places).forEach(function (key, ind) { Places[key].tokens_count = Places[key].tokens.length; });
 
     if (!ExitRun) {
-        Object.keys(Trans).forEach(function (key, ind) {        // Цикл по ключам переходов
+        Object.keys(Trans).forEach(function (key, ind) {        // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             var arcsIn = get_arcsIn(key);
             if (ready_toFire(arcsIn)) {
                 var run_item = {};
@@ -57,15 +59,15 @@ function animate1()
             if (arc.from.tokens.length > 0)
             {
                 var animation = Raphael.animation(new XY(arcX2(arc), arcY2(arc)), AnimateDelay, "easeIn");
-                var ttoken = arc.from.tokens.pop();                                           // Взять токен
-                if (typeof ttoken != "undefined" && ttoken.hasOwnProperty('type'))            // Надо проверить на случай > 10
+                var ttoken = arc.from.tokens.pop();                                           // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+                if (typeof ttoken != "undefined" && ttoken.hasOwnProperty('type'))            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ > 10
                 {
-                    ttoken.remove();                                                          // Можно удалить
+                    ttoken.remove();                                                          // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 }
-                ttoken = paper.circle(arcX1(arc), arcY1(arc), TN_RADIUS).attr(token_attr);            // Добавить токен для анимации
+                ttoken = paper.circle(arcX1(arc), arcY1(arc), TN_RADIUS).attr(token_attr);            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 redraw_tokens(arc.from, arc.from.x, arc.from.y);
-                run_item.temp_tokens.push(ttoken);                                            //  и переместить во временный массив
-                run_item.temp_tokens[run_item.temp_tokens.length - 1].animate(animation);     // Теперь анимируем
+                run_item.temp_tokens.push(ttoken);                                            //  пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                run_item.temp_tokens[run_item.temp_tokens.length - 1].animate(animation);     // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             }
         });
     });
@@ -108,7 +110,7 @@ function ready_toFire(arcsIn) {
             item.from.tokens_count--;
         }
     });
-    if (!isReady) { //Если неудачно, то восстановить токены
+    if (!isReady) { //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         arcsIn.forEach(function (item, ind) { item.from.tokens_count = item.from.tokens.length; });
     }
     return isReady;
